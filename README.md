@@ -1,35 +1,29 @@
 # Content Summarizer
 
-An agent skill for summarizing long-form content into clear, useful notes.
+An agent skill for summarizing long-form, information-dense content into clear notes.
 
 ## Overview
 
-`content-summarizer` helps agents turn articles, documents, transcripts, and other source material into concise summaries. It is intended for workflows where the important points, decisions, evidence, and follow-up actions need to be extracted quickly without losing the structure of the original content.
+`content-summarizer` is built for sources where the useful signal is spread across many minutes or pages, such as YouTube transcripts, blog articles, podcasts, interviews, talks, documentation, and reports.
 
-## Use Cases
-
-- Summarize articles, blog posts, and documentation.
-- Extract key points from reports or meeting notes.
-- Produce concise briefings from long source material.
-- Identify decisions, action items, risks, and open questions.
-- Convert dense content into readable notes.
+Use it to extract the main ideas, supporting evidence, caveats, decisions, action items, and open questions without losing the structure of the original material.
 
 ## Usage
 
-Install or enable this skill in an agent workspace, then invoke it when you need content summarized. Provide the source content directly, or provide enough context for the agent to read the relevant files or pages.
+Install or enable this skill in an agent workspace, then provide the source content directly or enough context for the agent to read it.
 
 Example requests:
 
 ```text
-Summarize this article into key points and action items.
+Summarize this YouTube transcript into key ideas, examples, and action items.
 ```
 
 ```text
-Read this document and give me an executive summary with open questions.
+Read this long blog article and give me an executive summary with caveats and open questions.
 ```
 
 ```text
-Condense these notes into a structured briefing.
+Condense these podcast notes into a structured briefing.
 ```
 
 ## Output Style
@@ -39,12 +33,12 @@ Summaries should be:
 - Accurate to the source material.
 - Concise without dropping important caveats.
 - Structured for quick scanning.
-- Explicit about uncertainty, missing context, or assumptions.
+- Explicit about uncertainty or missing context.
 - Focused on the user's requested format when one is provided.
 
 ## Development
 
-This repository contains the skill source. Keep changes scoped, test examples against realistic content, and avoid adding broad behavior that belongs in a more specialized skill.
+This repository contains the skill source. Keep changes scoped and test examples against realistic long-form content.
 
 ## License
 
