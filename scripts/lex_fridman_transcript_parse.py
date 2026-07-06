@@ -119,7 +119,7 @@ def download_html(slug: str) -> str:
     except urllib.error.HTTPError as e:
         if e.code == 404:
             print(f'Error: No transcript page at {url}', file=sys.stderr)
-            print('This episode may predate Lex Fridman transcript pages (~2023+).', file=sys.stderr)
+            print('This episode may not have an official transcript page.', file=sys.stderr)
             print('Fall back to YouTube subtitles:', file=sys.stderr)
             print('  python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<out>" "<youtube-url>"', file=sys.stderr)
             print('  python clean_vtt_subtitles.py <out>.en.vtt transcript.md', file=sys.stderr)
