@@ -1,12 +1,14 @@
 # Content Summarizer
 
-An agent skill for summarizing long-form, information-dense content into clear notes.
+An agent skill for turning long-form sources into notes.
 
 ## Overview
 
-`content-summarizer` is built for sources where the useful signal is spread across many minutes or pages, such as YouTube transcripts, blog articles, podcasts, interviews, talks, documentation, and reports.
+`content-summarizer` handles transcripts, articles, podcasts, interviews,
+talks, docs, reports, and papers.
 
-Use it to extract the main ideas, supporting evidence, caveats, decisions, action items, and open questions without losing the structure of the original material.
+Use it to preserve claims, evidence, reasoning, caveats, confidence, and
+implications while cutting clutter.
 
 ## Usage
 
@@ -15,23 +17,23 @@ Install or enable this skill in an agent workspace, then provide the source cont
 Example requests:
 
 ```text
-Summarize this YouTube transcript into key ideas, examples, and action items.
+Summarize this YouTube transcript into four-layer notes.
 ```
 
 ```text
-Read this long blog article and give me an executive summary with caveats and open questions.
+Read this long article and preserve the main argument, evidence, and caveats.
 ```
 
 ```text
-Condense these podcast notes into a structured briefing.
+Condense these podcast notes without losing the speaker's reasoning chain.
 ```
 
 ## Output Style
 
-Summaries should be:
+Notes should be:
 
 - Accurate to the source material.
-- Concise without dropping important caveats.
+- Concise without dropping caveats.
 - Structured for quick scanning.
 - Explicit about uncertainty or missing context.
 - Focused on the user's requested format when one is provided.

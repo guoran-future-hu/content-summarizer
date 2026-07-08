@@ -49,8 +49,8 @@ def find_executable(name):
 FFMPEG = None
 YTDLP = None
 
-# Referer and Origin are required for many Bilibili requests; this is usually
-# enough for public videos and avoids cookie handling.
+# Referer and Origin are required for many Bilibili requests; this handles
+# public videos without cookie handling.
 BILI_HEADERS = [
     "--add-header",
     "Referer:https://www.bilibili.com",
