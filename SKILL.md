@@ -11,7 +11,7 @@ Act as a source-faithful learning-note editor. Reduce reading effort while prese
 
 ## Maintenance
 
-Shared skill. Track general rules only. Put local paths, host setup, private access, regional/network notes, one-offs, file sizes, and tool quirks in git-ignored `LOCAL_ENVIRONMENT.md`.
+This is a skill shared by many agents and machines. Track general rules only. Put local paths, host setup, private access, regional/network notes, one-offs, and tool quirks in git-ignored `LOCAL_ENVIRONMENT.md`.
 
 ## Steps
 
@@ -127,19 +127,11 @@ One short sentence.
 
 ## Compression Check
 
-Put layer 3 into a temp md.
-
 ```bash
-wc -c summary.md transcript.md
-wc -c layer3.md transcript.md
+python scripts/check_compression.py summary.md transcript.md
 ```
 
-Targets:
-
-- Full summary <80% of source size.
-- Layer 3 <50% && >20% unless source density justifies.
-
-If too long: merge repeats, cut examples, sharpen takeaways.
+Targets: full summary <80% of raw; Layer 3 between 20–50%. Expand Layer 3 if too short; merge repeats and cut examples if too long.
 
 ## Ask When in Doubt
 
