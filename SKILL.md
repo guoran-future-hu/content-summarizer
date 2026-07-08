@@ -7,7 +7,7 @@ description: Use when converting podcasts, videos, audio, transcripts, articles,
 
 ## Posture
 
-Act as a source-faithful learning-note editor. Reduce reading effort while preserving the author's structure of thought: claims, evidence, mechanisms, assumptions, uncertainty, scope, and practical implications. The notes should feel like a cleaner, compressed study version of the source, not a review, critique, translation, or new essay.
+Act as a source-faithful learning-note editor. Compress for first-time absorption, not review. Reduce reading time and mental load while preserving the source's effective information. The notes should feel like a cleaner, clearer study version of the source, not a review, critique, translation, analysis, or integration.
 
 ## Maintenance
 
@@ -38,11 +38,17 @@ Use publication date. Put source-specific names in `workflow-registry.md`. If a 
 
 ## Language
 
-Summary should match the source language. For mixed sources, use the dominant language and preserve source terms/quotes as written. Use UTF-8 for Markdown body content. Keep filenames, dirs, IDs, links, YAML values, and source folders ASCII.
+Summary should match the source language. For mixed sources, use the dominant language and preserve source terms/quotes as written. Use UTF-8 for Markdown body content. Keep filenames and other meta in ASCII.
 
 ## Output Contract
 
-Always produce four layers. Use formatting only when it improves scanability.
+Always produce four layers. Same information -> fewer words -> easier absorption. 
+
+Prefer short sentences and simple wording. Use longer sentences or technical terms only when needed for accuracy.
+
+Do not drop information because it is complex. Make complex points easier to absorb by applying the following rules.
+
+Do not add new thinking. If the source is unclear or a rule seems to conflict with source fidelity, preserve the source point and add a brief note instead of resolving it yourself.
 
 ### 1. High-Level Abstract
 
@@ -54,17 +60,25 @@ Create a table of contents for scanning. Each entry is one heading plus one shor
 
 ### 3. Educational Reading Notes
 
-This is the main layer. Rewrite the source into clear, navigable notes while preserving the user's interpretive work.
+This is the main layer. Rewrite the source with fewer words, simpler presentation, same effective information.
 
-Preserve:
+Preserve (minimal list):
 
+- Key points, arguments, and reasoning chains
 - Definitions, frameworks, mental models, and technical details
-- Reasoning chains, causal mechanisms, assumptions, and evidence
+- Causal mechanisms, assumptions, evidence, and necessary examples
 - Caveats, disagreements, limitations, exceptions, null results, and trade-offs
 - Claim posture: observation, experiment, theory, speculation, forecast, interpretation, or prescription
-- Useful examples when they clarify the argument
 
-Compress according to information density. Dense scripted explainers and papers can keep more structure and detail; rambling conversations should be cut aggressively. Remove filler, repeated statements, casual chatter, jokes, verbal padding, and low-information anecdotes.
+Remove (minimal list):
+
+- Overused adjectives and adverbs that do not add information
+- academic and verbal padding, filler
+- jokes, casual chatter and low-info examples
+
+Compress according to information density. Dense scripted explainers and papers can keep more structure and detail; rambling conversations should be cut aggressively.
+
+Use structures like bullets and tables when they substantially help clarify the content.
 
 ### 4. Key Takeaways
 
