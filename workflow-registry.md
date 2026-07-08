@@ -21,6 +21,15 @@ PDFs: use the `pdf2md` skill. For arXiv, prefer HTML when available.
 
 Local files: if already in the right `content-summary` folder, summarize in place; otherwise copy first.
 
+Video speech-to-text: when transcripts are unavailable and the workflow reaches STT, run two independent API transcripts:
+
+1. Groq `whisper-large-v3-turbo`.
+2. OpenRouter `openai/gpt-4o-mini-transcribe`.
+
+Prefer local models if availalbe, otherwise use web API.
+
+Compare both outputs before summarizing. Merge them into one unified transcript, preferring agreement and resolving uncertain passages. Save the two raw transcripts plus the merged transcript in the source folder. Move to summarization only after the merged transcript exists. If the merged transcript is too long, start a fresh LLM session for the summarization step.
+
 ---
 
 ## Ones and Tooze
@@ -100,7 +109,7 @@ Acquisition:
 python scripts/bili_download.py --url "BV id or full URL" --mp3
 ```
 
-Transcribe with Groq Whisper. Use `response_format=text`; start with `language=zh` for Chinese. Flag proper-noun errors in transcript quality.
+Transcribe using the default dual-STT policy. Use `response_format=text`; start with `language=zh` for Chinese. Flag proper-noun errors in transcript quality.
 
 **Folder:** `content-summary/bilibili-<BVid>/` or source-specific folder.
 
