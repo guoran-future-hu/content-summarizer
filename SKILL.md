@@ -7,7 +7,7 @@ description: Use when converting podcasts, videos, audio, transcripts, articles,
 
 ## Posture
 
-Act as a source-faithful learning-note editor. Compress for first-time absorption, not review. Reduce reading time and mental load while preserving the source's effective information. The notes should feel like a cleaner, clearer study version of the source, not a review, critique, translation, analysis, or integration.
+Act as a source-faithful learning-note editor. Compress for first-time absorption, not review. Reduce reading time and mental load while preserving the source's effective information. The notes should feel like a cleaner, clearer study version of the source.
 
 ## Maintenance
 
@@ -21,10 +21,11 @@ This is a skill shared by many agents and machines. Track general rules only. Pu
 4. Acquire the highest-tier transcript/source text.
 5. Save raw/source material under `./content-summary/<source-folder>/`.
 6. Clean mechanical artifacts only.
-7. Write four-layer notes beside the raw/source file with `-summary`.
-8. Run the compression check; tighten if needed.
-9. Delete temporary staging files.
-10. Update `workflow-registry.md` only for reusable acquisition, cleanup, fallback, folder, or naming rules.
+7. Draft Layer 2 as the source map, then write the four-layer notes beside the raw/source file with `-summary`.
+8. Run the coverage audit.
+9. Run the compression check; tighten if needed.
+10. Delete temporary staging files.
+11. Update `workflow-registry.md` only for reusable acquisition, cleanup, fallback, folder, or naming rules.
 
 ## Filing
 Save final outputs under `./content-summary/`, organized by source. Preserve the raw/source file. Use existing source folders when possible.
@@ -56,11 +57,21 @@ Write 3-4 sentences, about 80-120 words. Name the topic, central question or the
 
 ### 2. Structured Outline
 
-Create a table of contents for scanning. Each entry is one heading plus one short sentence, max about 20 words. Collapse low-value or similar sections into broader headings. Use timestamps only when directly available.
+Create the source map, not just a polished table of contents. Layer 2 is the coverage artifact that makes Layer 3's content salient.
+
+**Build it from the source, not memory**. Start with every explicit source heading, timestamp block, section break, or obvious topic shift, then scan between those anchors for unheaded topic shifts. Each entry is one heading plus one compact sentence made from connecting short phrases that index distinct claims, mechanisms, examples, caveats, historical facts, source-bias points, practical implications, institutional or economic structures, and side branches worth preserving.
+
+Compactness and complete coverage do not conflict here: the sentence indexes and connects content; it does not explain it.
+
+Low-value or similar sections may be merged, but the merged heading or sentence must name the covered material.
+
+Use timestamps only when directly available.
 
 ### 3. Educational Reading Notes
 
 This is the main layer. Rewrite the source with fewer words, simpler presentation, same effective information.
+
+Cover every distinct topic and significant content move in the source. A topic may be merged into a broader heading, but it must not vanish. Preserve side branches when they carry a distinct claim, example, mechanism, historical fact, source caveat, or practical implication.
 
 Preserve (minimal list):
 
@@ -84,6 +95,10 @@ Use structures like bullets and tables when they substantially help clarify the 
 ### 4. Key Takeaways
 
 Distill the source's core conclusions, strongest arguments, practical implications, and ideas worth remembering. Keep findings, mechanisms, implications, recommendations, and boundaries distinct instead of flattening them into generic advice.
+
+## Wrong Source Warning
+
+If you are provided a source that has simialr 4 layer structure, stop and warn the user for potentially provided summary as source.
 
 ## Fidelity, Attribution, and Confidence
 
@@ -140,13 +155,30 @@ One short sentence.
 - ...
 ```
 
+## Coverage Audit
+
+Before moving to Layer 3, compare the source against Layer 2 for omissions. Scripts may extract headings or timestamps, but semantic coverage is judged by reading the source map.
+
+1. Re-check the source against Layer 2. Every explicit source heading must appear, unless marked `intentionally dropped: <low-info reason>`.
+2. For each source topic or significant content move, mark one of: `indexed`, `merged into <Layer 2 heading>`, or `intentionally dropped: <low-info reason>`.
+3. Add missing effective information to Layer 2 before changing Layer 3.
+4. Refresh the affected Layer 3 notes from the corrected Layer 2 source map.
+
+Completion criterion: every source heading, topic, and significant content move has a visible destination in Layer 2, or a concrete low-information drop reason.
+
 ## Compression Check
+
+Check summary size against raw source:
 
 ```bash
 python scripts/check_compression.py summary.md transcript.md
 ```
 
-Targets: full summary <80% of raw; Layer 3 between 20–50%. Expand Layer 3 if too short; merge repeats and cut examples if too long.
+Targets:
+
+- full summary < 80% of raw, if more than 80% then it's not really a summary
+- Layer 3 should be roughly between 20–50% depends on the density of source. < 20% is a warning sign of potentially skipping content.
+- Do not rerun only to satisfy a ratio. If Layer 3 is below target, run the coverage audit first; expand only with missing effective information.
 
 ## Ask When in Doubt
 
