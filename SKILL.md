@@ -44,7 +44,7 @@ Summary should match the source language. For mixed sources, use the dominant la
 
 Always produce four layers. Same information -> fewer words -> easier absorption. 
 
-Prefer short sentences and simple wording. Use longer sentences or technical terms only when needed for accuracy.
+Prefer short sentences and simple wording. Use longer sentences or complex wording only when needed for accuracy.
 
 Do not drop information because it is complex. Make complex points easier to absorb by applying the following rules.
 
@@ -64,6 +64,7 @@ This is the main layer. Rewrite the source with fewer words, simpler presentatio
 
 Preserve (minimal list):
 
+- Technical terms
 - Key points, arguments, and reasoning chains
 - Definitions, frameworks, mental models, and technical details
 - Causal mechanisms, assumptions, evidence, and necessary examples
@@ -73,8 +74,8 @@ Preserve (minimal list):
 Remove (minimal list):
 
 - Overused adjectives and adverbs that do not add information
-- academic and verbal padding, filler
-- jokes, casual chatter and low-info examples
+- Academic and verbal padding, filler
+- Jokes, casual chatter and low-info examples
 
 Compress according to information density. Dense scripted explainers and papers can keep more structure and detail; rambling conversations should be cut aggressively.
 
@@ -88,7 +89,7 @@ Distill the source's core conclusions, strongest arguments, practical implicatio
 
 Default to clean source-grounded prose. Attribute only when speaker identity or author framing changes interpretation, such as disagreement, expertise, disputed claims, forecasts, or clearly personal analysis.
 
-Preserve the source's confidence level. Keep hedges such as "probably," "might," "very likely," "I estimate," "in my view," etc. Mark unclear transcript passages or weak source quality instead of upgrading uncertain claims.
+Preserve the source's confidence level. Keep hedges such as "probably," "might," "very likely," "in my view," etc.
 
 For controversial or interpretive claims, signal the frame once at the section or paragraph level rather than repeating attribution sentence by sentence. Use direct quotes sparingly, only for precise or memorable wording.
 
