@@ -1,6 +1,8 @@
 # Workflow Registry
 
-This is acquisition rules shared by many agents and machiens. Keep local specific workarounds in `LOCAL_ENVIRONMENT.md`.
+This is acquisition rules shared by many agents and machiens. Keep local specific workarounds in `./LOCAL_ENVIRONMENT.md`.
+
+Run helper commands from the skill root, or replace `./scripts/` with the absolute path to this skill's `scripts` directory. Replace `<summary-root>` with the user's output folder, usually `./content-summary` in the active workspace, and replace `<source-folder>` before running a command.
 
 ## Default
 
@@ -19,7 +21,7 @@ Web pages: use the `defuddle` skill, including official transcript pages.
 
 PDFs: use the `pdf2md` skill. For arXiv, prefer HTML when available.
 
-Local files: if already in the right `content-summary` folder, summarize in place; otherwise copy first.
+Local files: if already in the right `<summary-root>` folder, summarize in place; otherwise copy first.
 
 Video speech-to-text: when transcripts are unavailable and the workflow reaches STT, run two independent API transcripts:
 
@@ -38,12 +40,12 @@ Compare both outputs before summarizing. Merge them into one unified transcript,
 
 ```bash
 python -m yt_dlp --flat-playlist --dump-json "<playlist_url>"
-python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<out>.%(ext)s" "https://www.youtube.com/watch?v=<id>"
+python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<summary-root>/ones-and-tooze-economics/<slug>.%(ext)s" "https://www.youtube.com/watch?v=<id>"
 ```
 
 **Transcript:** YouTube auto-subs; clean VTT; check Tooze/Cam speaker errors.
 **Fallback:** `defuddle` skill on FP page for episode metadata.
-**Folder:** `content-summary/ones-and-tooze-economics/`
+**Folder:** `<summary-root>/ones-and-tooze-economics/`
 **Naming:** `YYYY-MM-DD-<slug>-(Plus-<topic>)-Ep<NNN>.md`
 
 ---
@@ -53,21 +55,21 @@ python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<out>.%(ext
 **Source:** `lexfridman.com`, @lexfridman YouTube playlist `PLrAXtmErZgOdP_8GztsuKi9nrraNbKKp4`
 **Discovery:** RSS `lexfridman.com/feed/podcast/` or yt-dlp flat playlist.
 **Episode page:** `defuddle` skill on `https://lexfridman.com/<guest-slug>`.
-**Folder:** `content-summary/lex-fridman/`
+**Folder:** `<summary-root>/lex-fridman/`
 **Naming:** `YYYY-MM-DD-<guest-slug>-<descriptive>-transcript.md`
 
 Acquisition:
 
 1. `defuddle` skill on `https://lexfridman.com/<guest-slug>-transcript`
-2. Fallback parser: `python scripts/lex_fridman_transcript_parse.py <guest-slug> -o transcript.md`
+2. Fallback parser: `python ./scripts/lex_fridman_transcript_parse.py <guest-slug> -o <summary-root>/<source-folder>/transcript.md`
 3. Manual YouTube subtitles:
    ```bash
-   python -m yt_dlp --write-subs --sub-lang en --skip-download -o "<out>.%(ext)s" "<youtube-url>"
+   python -m yt_dlp --write-subs --sub-lang en --skip-download -o "<summary-root>/<source-folder>/<guest-slug>.%(ext)s" "<youtube-url>"
    ```
 4. Auto YouTube subtitles:
    ```bash
-   python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<out>" "<youtube-url>"
-   python scripts/clean_vtt_subtitles.py <out>.en.vtt transcript.md
+   python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<summary-root>/<source-folder>/<guest-slug>.%(ext)s" "<youtube-url>"
+   python ./scripts/clean_vtt_subtitles.py <summary-root>/<source-folder>/<guest-slug>.en.vtt <summary-root>/<source-folder>/transcript.md
    ```
 
 ---
@@ -78,7 +80,7 @@ Acquisition:
 **Acquisition:** convert `.eml` with `eml-to-md` in the active project/agent environment.
 **Fallback:** package Python API when CLI path handling fails.
 **Cleanup:** strip newsletter header/footer.
-**Folder:** `content-summary/latent-space/`
+**Folder:** `<summary-root>/latent-space/`
 
 ---
 
@@ -86,7 +88,7 @@ Acquisition:
 
 **Source:** report text supplied by user or workspace
 **Acquisition:** preserve report body, headings, tables, chart captions, source links. Remove email/web chrome.
-**Folder:** `content-summary/lyn-alden-investment-report/`
+**Folder:** `<summary-root>/lyn-alden-investment-report/`
 **Naming:** replace the title date with filename prefix, e.g. `2026-06-05-the-wild-west.md`.
 
 ---
@@ -106,12 +108,12 @@ Acquisition:
 **Acquisition:** subtitles first. Otherwise:
 
 ```bash
-python scripts/bili_download.py --url "BV id or full URL" --mp3
+python ./scripts/bili_download.py --url "BV id or full URL" --output <summary-root>/<source-folder>/audio --mp3
 ```
 
 Transcribe using the default dual-STT policy. Use `response_format=text`; start with `language=zh` for Chinese. Flag proper-noun errors in transcript quality.
 
-**Folder:** `content-summary/bilibili-<BVid>/` or source-specific folder.
+**Folder:** `<summary-root>/bilibili-<BVid>/` or source-specific folder.
 
 ---
 

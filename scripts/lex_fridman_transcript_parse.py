@@ -3,13 +3,13 @@
 Parse Lex Fridman podcast transcript HTML from lexfridman.com/<guest>-transcript.
 
 Usage:
-    python lex_fridman_transcript_parse.py <slug> -o transcript.md
+    python ./scripts/lex_fridman_transcript_parse.py <slug> -o <summary-root>/<source-folder>/transcript.md
 
     # Example:
-    python lex_fridman_transcript_parse.py jensen-huang -o transcript.md
+    python ./scripts/lex_fridman_transcript_parse.py jensen-huang -o <summary-root>/<source-folder>/transcript.md
 
     # Or with explicit input/output:
-    python lex_fridman_transcript_parse.py raw.html -o transcript.md
+    python ./scripts/lex_fridman_transcript_parse.py raw.html -o <summary-root>/<source-folder>/transcript.md
 """
 
 import sys
@@ -121,8 +121,8 @@ def download_html(slug: str) -> str:
             print(f'Error: No transcript page at {url}', file=sys.stderr)
             print('This episode may not have an official transcript page.', file=sys.stderr)
             print('Fall back to YouTube subtitles:', file=sys.stderr)
-            print('  python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<out>" "<youtube-url>"', file=sys.stderr)
-            print('  python clean_vtt_subtitles.py <out>.en.vtt transcript.md', file=sys.stderr)
+            print('  python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<summary-root>/<source-folder>/<guest-slug>.%(ext)s" "<youtube-url>"', file=sys.stderr)
+            print('  python ./scripts/clean_vtt_subtitles.py <summary-root>/<source-folder>/<guest-slug>.en.vtt <summary-root>/<source-folder>/transcript.md', file=sys.stderr)
             sys.exit(1)
         raise
 

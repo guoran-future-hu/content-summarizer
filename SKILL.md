@@ -1,9 +1,14 @@
 ---
 name: content-summarizer
-description: Use when converting podcasts, videos, audio, transcripts, articles, papers, PDFs, Markdown files, pasted text, or other long-form source material into durable educational notes. Covers workflow-registry acquisition, raw-source preservation, `content-summary` filing, and four-layer notes that preserve reasoning, evidence, confidence, scope, and useful detail while compressing away low-value transcript or prose clutter.
+description: Use when turning long-form source material into durable four-layer notes with raw-source preservation, user-owned content-summary filing, and compression checks.
 ---
 
 # Long-Form Source -> Notes
+
+Use two roots:
+
+- Skill root: this skill directory, for shipped files such as `./workflow-registry.md`, `./scripts/`, and optional `./LOCAL_ENVIRONMENT.md`.
+- Summary root: the user's output folder, defaulting to `./content-summary` in the active workspace unless the user chooses another location. Do not store user source material in the skill repo by default.
 
 ## Posture
 
@@ -11,31 +16,31 @@ Act as a source-faithful learning-note editor. Compress for first-time absorptio
 
 ## Maintenance
 
-This is a skill shared by many agents and machines. Track general rules only. Put local paths, host setup, private access, regional/network notes, one-offs, and tool quirks in git-ignored `LOCAL_ENVIRONMENT.md`.
+This is a skill shared by many agents and machines. Track general rules only. Put local paths, host setup, private access, regional/network notes, one-offs, and tool quirks in git-ignored `./LOCAL_ENVIRONMENT.md`.
 
 ## Steps
 
-1. Load `LOCAL_ENVIRONMENT.md` if present.
+1. Load `./LOCAL_ENVIRONMENT.md` if present.
 2. Identify source type, metadata, and source folder.
-3. Read `workflow-registry.md`; use the matching entry or default policy.
+3. Read `./workflow-registry.md`; use the matching entry or default policy.
 4. Acquire the highest-tier transcript/source text.
-5. Save raw/source material under `./content-summary/<source-folder>/`.
+5. Save raw/source material in `<summary-root>/<source-folder>/`.
 6. Clean mechanical artifacts only.
 7. Draft Layer 2 as the source map, then write the four-layer notes beside the raw/source file with `-summary`.
 8. Run the coverage audit.
 9. Run the compression check; tighten if needed.
 10. Delete temporary staging files.
-11. Update `workflow-registry.md` only for reusable acquisition, cleanup, fallback, folder, or naming rules.
+11. Update `./workflow-registry.md` only for reusable acquisition, cleanup, fallback, folder, or naming rules.
 
 ## Filing
-Save final outputs under `./content-summary/`, organized by source. Preserve the raw/source file. Use existing source folders when possible.
+Save final outputs under `<summary-root>/`, organized by source. Preserve the raw/source file. Use existing source folders when possible.
 
 Default names:
 
 - Raw/source: `YYYY-MM-DD-<title>.md`
 - Summary: `YYYY-MM-DD-<title>-summary.md`
 
-Use publication date. Put source-specific names in `workflow-registry.md`. If a provided source is outside `content-summary`, copy it into the right source folder first.
+Use publication date. Put source-specific names in `./workflow-registry.md`. If a provided source is outside `<summary-root>`, copy it into the right source folder first.
 
 ## Language
 
@@ -98,7 +103,7 @@ Distill the source's core conclusions, strongest arguments, practical implicatio
 
 ## Wrong Source Warning
 
-If you are provided a source that has simialr 4 layer structure, stop and warn the user for potentially provided summary as source.
+Stop and warn the user for potentially provided summary as source if file has simialr 4 layer structure.
 
 ## Fidelity, Attribution, and Confidence
 
@@ -171,7 +176,7 @@ Completion criterion: every source heading, topic, and significant content move 
 Check summary size against raw source:
 
 ```bash
-python scripts/check_compression.py summary.md transcript.md
+python ./scripts/check_compression.py <summary-root>/<source-folder>/<summary-file>.md <summary-root>/<source-folder>/<raw-source-file>.md
 ```
 
 Targets:

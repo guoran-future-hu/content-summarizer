@@ -2,7 +2,7 @@
 """Check content-summarizer compression ratios against raw transcript.
 
 Usage:
-    python check_compression.py summary.md transcript.md
+    python ./scripts/check_compression.py <summary-root>/<source-folder>/<summary-file>.md <summary-root>/<source-folder>/<raw-source-file>.md
 
 Prints byte sizes, ratios, and PASS/FAIL for:
     - Full summary < 80% of raw
