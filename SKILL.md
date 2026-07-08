@@ -78,13 +78,9 @@ Use these exceptions when they match existing library conventions:
 
 ## Language and Encoding
 
-Match the source's primary language:
+The summary language should match the source's primary language:
 
-- English source -> English notes
-- Chinese source -> Chinese notes
-- Mixed source -> dominant language, with important quotes preserved in the original language
-
-Use UTF-8 for Markdown body content and preserve meaningful typographic characters. Keep filenames, directories, IDs, links, YAML metadata values, source folder names, and other infrastructure identifiers ASCII-only.
+Use UTF-8 for Markdown body content. Keep filenames and other infrastructure identifiers ASCII-only.
 
 ## Output Contract
 
@@ -92,11 +88,11 @@ Always produce four layers. Use formatting only when it improves scanability.
 
 ### 1. High-Level Abstract
 
-Write 3-4 sentences, about 80-120 words. Name the topic, central question or thesis, and broad structure. Keep this layer index-card sized: enough to recognize the source later, not enough to substitute for the notes.
+Write 3-4 sentences, about 80-120 words. Name the topic, central question or thesis, and broad structure. Keep this layer index-card sized.
 
 ### 2. Structured Outline
 
-Create a table of contents for scanning. Each entry is one heading plus one short sentence, max about 20 words. Collapse low-value or repetitive sections into broader headings. Use timestamps only when directly available.
+Create a table of contents for scanning. Each entry is one heading plus one short sentence, max about 20 words. Collapse low-value or similar sections into broader headings. Use timestamps only when directly available.
 
 ### 3. Educational Reading Notes
 
