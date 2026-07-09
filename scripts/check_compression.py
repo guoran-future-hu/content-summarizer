@@ -4,9 +4,14 @@
 Usage:
     python ./scripts/check_compression.py <summary-root>/<source-folder>/<summary-file>.md <summary-root>/<source-folder>/<raw-source-file>.md
 
-Prints byte sizes, ratios, and PASS/FAIL for:
+Prints byte sizes, ratios, and status for:
     - Full summary < 80% of raw
-    - Layer 3 (Educational Reading Notes) between 20% and 50% of raw
+    - Layer 3 (Educational Reading Notes) roughly between 20% and 50% of raw
+
+Layer 3 below 20% is a coverage warning, not a failure. The fix is to run the
+coverage audit and add only missing effective information.
+Layer 3 above 50% is a compression warning, not a failure. The fix is to tighten
+only when doing so preserves effective information.
 """
 
 import re
@@ -48,9 +53,22 @@ def main():
     full_pct = summary_bytes / raw_bytes * 100
     l3_pct = layer3_bytes / raw_bytes * 100
 
-    print(f"Full summary: {summary_bytes:>6d} / {raw_bytes:>6d} = {full_pct:5.1f}%  {'PASS' if full_pct < 80 else 'FAIL'}")
-    print(f"Layer 3 only: {layer3_bytes:>6d} / {raw_bytes:>6d} = {l3_pct:5.1f}%  {'PASS' if 20 < l3_pct < 50 else 'FAIL'}")
-    if full_pct >= 80 or not (20 < l3_pct < 50):
+    full_status = 'PASS' if full_pct < 80 else 'FAIL'
+    if l3_pct > 50:
+        l3_status = 'WARN'
+    elif l3_pct < 20:
+        l3_status = 'WARN'
+    else:
+        l3_status = 'PASS'
+
+    print(f"Full summary: {summary_bytes:>6d} / {raw_bytes:>6d} = {full_pct:5.1f}%  {full_status}")
+    print(f"Layer 3 only: {layer3_bytes:>6d} / {raw_bytes:>6d} = {l3_pct:5.1f}%  {l3_status}")
+    if l3_status == 'WARN':
+        if l3_pct < 20:
+            print("Layer 3 below 20%: run the coverage audit; expand only missing effective information.")
+        else:
+            print("Layer 3 above 50%: tighten if possible while preserving effective information.")
+    if full_status == 'FAIL':
         sys.exit(1)
 
 

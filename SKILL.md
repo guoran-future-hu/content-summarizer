@@ -1,14 +1,14 @@
 ---
 name: content-summarizer
-description: Use when turning long-form source material into durable four-layer notes with raw-source preservation, user-owned content-summary filing, and compression checks.
+description: Use when turning long-form source material into durable four-layer notes with raw-source preservation, user-owned summary filing, and compression checks.
 ---
 
 # Long-Form Source -> Notes
 
 Use two roots:
 
-- Skill root: this skill directory, for shipped files such as `./workflow-registry.md`, `./scripts/`, and optional `./LOCAL_ENVIRONMENT.md`.
-- Summary root: the user's output folder, defaulting to `./content-summary` in the active workspace unless the user chooses another location. Do not store user source material in the skill repo by default.
+- Skill root: this skill directory, for shipped files such as `./source-acquisition.md`, `./naming-convention.md`, `./scripts/`, and optional `./LOCAL_ENVIRONMENT.md`.
+- Summary root: the user's output folder, chosen by the user or local environment. Do not store user source material in the skill repo by default.
 
 ## Posture
 
@@ -21,26 +21,19 @@ This is a skill shared by many agents and machines. Track general rules only. Pu
 ## Steps
 
 1. Load `./LOCAL_ENVIRONMENT.md` if present.
-2. Identify source type, metadata, and source folder.
-3. Read `./workflow-registry.md`; use the matching entry or default policy.
-4. Acquire the highest-tier transcript/source text.
-5. Save raw/source material in `<summary-root>/<source-folder>/`.
+2. Identify source type, metadata, and whether the provided source is already usable Markdown/source text.
+3. Read `./naming-convention.md`; use the matching entry or default policy for source folder and file names.
+4. If usable Markdown/source text is not already provided, read `./source-acquisition.md`
+5. Save or copy raw/source material in `<summary-root>/<source-folder>/`.
 6. Clean mechanical artifacts only.
 7. Draft Layer 2 as the source map, then write the four-layer notes beside the raw/source file with `-summary`.
 8. Run the coverage audit.
 9. Run the compression check; tighten if needed.
 10. Delete temporary staging files.
-11. Update `./workflow-registry.md` only for reusable acquisition, cleanup, fallback, folder, or naming rules.
+11. Update `./source-acquisition.md` only for reusable acquisition, cleanup, or fallback rules. Update `./naming-convention.md` only for reusable folder or naming rules.
 
 ## Filing
-Save final outputs under `<summary-root>/`, organized by source. Preserve the raw/source file. Use existing source folders when possible.
-
-Default names:
-
-- Raw/source: `YYYY-MM-DD-<title>.md`
-- Summary: `YYYY-MM-DD-<title>-summary.md`
-
-Use publication date. Put source-specific names in `./workflow-registry.md`. If a provided source is outside `<summary-root>`, copy it into the right source folder first.
+Read `./naming-convention.md` before saving. Preserve the raw/source file beside the summary under `<summary-root>/<source-folder>/`. If a provided source is outside `<summary-root>`, copy it into the right source folder first.
 
 ## Language
 
@@ -83,7 +76,7 @@ Preserve (minimal list):
 - Technical terms
 - Key points, arguments, and reasoning chains
 - Definitions, frameworks, mental models, and technical details
-- Causal mechanisms, assumptions, evidence, and necessary examples
+- Causal mechanisms, assumptions, evidence, and supporting examples
 - Caveats, disagreements, limitations, exceptions, null results, and trade-offs
 - Claim posture: observation, experiment, theory, speculation, forecast, interpretation, or prescription
 
@@ -93,7 +86,7 @@ Remove (minimal list):
 - Academic and verbal padding, filler
 - Jokes, casual chatter and low-info examples
 
-Compress according to information density. Dense scripted explainers and papers can keep more structure and detail; rambling conversations should be cut aggressively.
+Compress according to information density, not medium. Conversational sources often contain repetition, filler, social chatter, and false starts; remove those aggressively. Preserve any conversational segment that carries a distinct claim, example, caveat, disagreement, mechanism, historical fact, confidence signal, or practical implication.
 
 Use structures like bullets and tables when they substantially help clarify the content.
 
@@ -181,9 +174,11 @@ python ./scripts/check_compression.py <summary-root>/<source-folder>/<summary-fi
 
 Targets:
 
-- full summary < 80% of raw, if more than 80% then it's not really a summary
-- Layer 3 should be roughly between 20–50% depends on the density of source. < 20% is a warning sign of potentially skipping content.
-- Do not rerun only to satisfy a ratio. If Layer 3 is below target, run the coverage audit first; expand only with missing effective information.
+- Full summary must be < 80% of raw; if it is >= 80%, tighten the summary.
+- Layer 3 should be roughly 20-50% of raw, depending on source density. Ratios outside this range are warnings, not failures.
+- If < 20%, run the coverage audit; expand only when the audit finds missing effective information.
+- If > 50%, tighten only where compression preserves effective information.
+- Do not add filler, drop nuance, or make byte-count edits only to satisfy a ratio.
 
 ## Ask When in Doubt
 

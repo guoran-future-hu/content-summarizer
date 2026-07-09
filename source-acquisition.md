@@ -1,8 +1,10 @@
-# Workflow Registry
+# Source Acquisition
 
-This is acquisition rules shared by many agents and machiens. Keep local specific workarounds in `./LOCAL_ENVIRONMENT.md`.
+Use this file only when the source Markdown/transcript is not already provided.
 
-Run helper commands from the skill root, or replace `./scripts/` with the absolute path to this skill's `scripts` directory. Replace `<summary-root>` with the user's output folder, usually `./content-summary` in the active workspace, and replace `<source-folder>` before running a command.
+These are acquisition rules shared by many agents and machines. Keep local-specific workarounds in `./LOCAL_ENVIRONMENT.md`.
+
+Run helper commands from the skill root, or replace `./scripts/` with the absolute path to this skill's `scripts` directory. Replace `<summary-root>` with the user's output folder, and replace `<source-folder>` before running a command.
 
 ## Default
 
@@ -21,14 +23,14 @@ Web pages: use the `defuddle` skill, including official transcript pages.
 
 PDFs: use the `pdf2md` skill. For arXiv, prefer HTML when available.
 
-Local files: if already in the right `<summary-root>` folder, summarize in place; otherwise copy first.
+Local non-Markdown files: convert or extract to Markdown/source text, then save using `./naming-convention.md`.
 
 Video speech-to-text: when transcripts are unavailable and the workflow reaches STT, run two independent API transcripts:
 
 1. Groq `whisper-large-v3-turbo`.
 2. OpenRouter `openai/gpt-4o-mini-transcribe`.
 
-Prefer local models if availalbe, otherwise use web API.
+Prefer local models if available, otherwise use web API.
 
 Compare both outputs before summarizing. Merge them into one unified transcript, preferring agreement and resolving uncertain passages. Save the two raw transcripts plus the merged transcript in the source folder. Move to summarization only after the merged transcript exists. If the merged transcript is too long, start a fresh LLM session for the summarization step.
 
@@ -45,8 +47,6 @@ python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<summary-ro
 
 **Transcript:** YouTube auto-subs; clean VTT; check Tooze/Cam speaker errors.
 **Fallback:** `defuddle` skill on FP page for episode metadata.
-**Folder:** `<summary-root>/ones-and-tooze-economics/`
-**Naming:** `YYYY-MM-DD-<slug>-(Plus-<topic>)-Ep<NNN>.md`
 
 ---
 
@@ -55,8 +55,6 @@ python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<summary-ro
 **Source:** `lexfridman.com`, @lexfridman YouTube playlist `PLrAXtmErZgOdP_8GztsuKi9nrraNbKKp4`
 **Discovery:** RSS `lexfridman.com/feed/podcast/` or yt-dlp flat playlist.
 **Episode page:** `defuddle` skill on `https://lexfridman.com/<guest-slug>`.
-**Folder:** `<summary-root>/lex-fridman/`
-**Naming:** `YYYY-MM-DD-<guest-slug>-<descriptive>-transcript.md`
 
 Acquisition:
 
@@ -80,7 +78,6 @@ Acquisition:
 **Acquisition:** convert `.eml` with `eml-to-md` in the active project/agent environment.
 **Fallback:** package Python API when CLI path handling fails.
 **Cleanup:** strip newsletter header/footer.
-**Folder:** `<summary-root>/latent-space/`
 
 ---
 
@@ -88,8 +85,6 @@ Acquisition:
 
 **Source:** report text supplied by user or workspace
 **Acquisition:** preserve report body, headings, tables, chart captions, source links. Remove email/web chrome.
-**Folder:** `<summary-root>/lyn-alden-investment-report/`
-**Naming:** replace the title date with filename prefix, e.g. `2026-06-05-the-wild-west.md`.
 
 ---
 
@@ -97,8 +92,6 @@ Acquisition:
 
 **Acquisition:** official/arXiv HTML first; `pdf2md` for PDF-only.
 **Cleanup:** preserve sections, equations, tables, figures/captions, appendix refs, citation context. Remove conversion artifacts.
-**Folder:** existing paper/source collection or new kebab-case folder.
-**Naming:** `<title-slug>-<year>.md`
 
 ---
 
@@ -112,14 +105,3 @@ python ./scripts/bili_download.py --url "BV id or full URL" --output <summary-ro
 ```
 
 Transcribe using the default dual-STT policy. Use `response_format=text`; start with `language=zh` for Chinese. Flag proper-noun errors in transcript quality.
-
-**Folder:** `<summary-root>/bilibili-<BVid>/` or source-specific folder.
-
----
-
-## Wang Xiao Monthly Review
-
-**Source:** Bilibili titles like `一条视频看X月`
-**Acquisition:** Bilibili entry.
-**Folder:** existing Wang Xiao folder or new kebab-case folder.
-**Naming:** `YYYY-MM-DD-monthly-review.md`; date from video publish date.

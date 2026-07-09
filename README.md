@@ -65,10 +65,9 @@ So conclution is simple, when designing context, this skill tried to cut assresi
 Install or enable this skill in an agent workspace, then provide the source content directly or enough context for the agent to read it.
 
 The skill files live in the skill root. Generated transcripts, source copies,
-and summaries should live in a user-owned summary root, normally
-`./content-summary` in the active workspace. This skill repository ignores
-`LOCAL_ENVIRONMENT.md` and its own `content-summary/` path so private notes and
-source material are not published with the skill.
+and summaries should live in a user-owned summary root. This skill repository
+ignores `LOCAL_ENVIRONMENT.md` and its own `content-summary/` path so private
+notes and source material are not published with the skill.
 
 Example requests:
 
