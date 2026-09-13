@@ -1,38 +1,40 @@
 # Source Acquisition
 
-Use this file only when the source Markdown/transcript is not already provided.
+Shared by many agents and machines; local workarounds go in `./LOCAL_ENVIRONMENT.md`.
 
-These are acquisition rules shared by many agents and machines. Keep local-specific workarounds in `./LOCAL_ENVIRONMENT.md`.
+Run commands from the skill root (or use the absolute `scripts/` path). `<summary-root>` = user's output folder; `<source-folder>` = per-source subfolder.
 
-Run helper commands from the skill root, or replace `./scripts/` with the absolute path to this skill's `scripts` directory. Replace `<summary-root>` with the user's output folder, and replace `<source-folder>` before running a command.
 
-## Default
+## Source order
 
-Source order:
+1. Official transcript
+2. Platform Auto transcript
+3. Speech-to-text — audio/video only
 
-1. Official transcript/source text
-2. Official captions
-3. Platform transcript
-4. Community captions
-5. Auto captions
-6. Speech-to-text
+Ask before paid APIs/services. Mark poor source quality.
 
-Prefer free, local, official, platform-native methods. Ask before paid APIs/services. Mark poor source quality.
 
-Web pages: use the `defuddle` skill, including official transcript pages.
+## Text sources
 
-PDFs: use the `pdf2md` skill. For arXiv, prefer HTML when available.
+If text sources (articles, reports, papers) are available:
 
-Local non-Markdown files: convert or extract to Markdown/source text, then save using `./naming-convention.md`.
+- Web pages: use the `defuddle` skill.
+- PDFs: use the `pdf2md` skill. For arXiv, prefer HTML when available.
 
-Video speech-to-text: when transcripts are unavailable and the workflow reaches STT, run two independent API transcripts:
+You can safely ignore the rest.
 
-1. Groq `whisper-large-v3-turbo`.
-2. OpenRouter `openai/gpt-4o-mini-transcribe`.
 
-Prefer local models if available, otherwise use web API.
+## Audio and video sources
 
-Compare both outputs before summarizing. Merge them into one unified transcript, preferring agreement and resolving uncertain passages. Save the two raw transcripts plus the merged transcript in the source folder. Move to summarization only after the merged transcript exists. If the merged transcript is too long, start a fresh LLM session for the summarization step.
+Captions/transcripts first when they exist; speech-to-text is the fallback:
+
+```bash
+./scripts/stt.sh <summary-root>/<source-folder>   # 120 s parts, resume-safe, guards; keys from env/.env; read the script header before changing anything
+```
+
+- Single pass: OpenRouter `openai/gpt-4o-mini-transcribe` — lightly normalized output is the base text (`stt/part_NN.json`; ~$0.09–0.13/audio-hour). No segment timestamps; `transcript.md` anchors each part's start (~2 min grid).
+- Join + validate: `./scripts/make_transcript.py <summary-root>/<source-folder>` — STT parts or a captions `.srt` (auto-detected; `--srt FILE` to force) → `transcript.md`.
+- Normalize after joining (mangled names straddle segments); apply decided fixes with `./scripts/apply_replacements.py transcript.md pairs.txt --table normalization.md` (counts table). Summarize only after the transcript file exists; a very long transcript may need a fresh session.
 
 ---
 
@@ -60,10 +62,7 @@ Acquisition:
 
 1. `defuddle` skill on `https://lexfridman.com/<guest-slug>-transcript`
 2. Fallback parser: `python ./scripts/lex_fridman_transcript_parse.py <guest-slug> -o <summary-root>/<source-folder>/transcript.md`
-3. Manual YouTube subtitles:
-   ```bash
-   python -m yt_dlp --write-subs --sub-lang en --skip-download -o "<summary-root>/<source-folder>/<guest-slug>.%(ext)s" "<youtube-url>"
-   ```
+3. Manual YouTube subtitles: `python -m yt_dlp --write-subs --sub-lang en --skip-download -o "<summary-root>/<source-folder>/<guest-slug>.%(ext)s" "<youtube-url>"`
 4. Auto YouTube subtitles:
    ```bash
    python -m yt_dlp --write-auto-subs --sub-lang en --skip-download -o "<summary-root>/<source-folder>/<guest-slug>.%(ext)s" "<youtube-url>"
@@ -88,20 +87,13 @@ Acquisition:
 
 ---
 
-## Academic Papers
-
-**Acquisition:** official/arXiv HTML first; `pdf2md` for PDF-only.
-**Cleanup:** preserve sections, equations, tables, figures/captions, appendix refs, citation context. Remove conversion artifacts.
-
----
-
 ## Bilibili
 
-**Source:** Bilibili URL or BV id
-**Acquisition:** subtitles first. Otherwise:
+**Source:** Bilibili URL / BV id
+**Recipe:** `./references/bilibili-recipes.md` — login cookies §0, exit codes, 多P, premium.
 
 ```bash
-python ./scripts/bili_download.py --url "BV id or full URL" --output <summary-root>/<source-folder>/audio --mp3
+./scripts/bili_captions.sh <url> <source-folder>   # exit 3 = NO_CAPTIONS -> run next line
+./scripts/bili_audio.sh    <url> <source-folder>   # -> <source-folder>/audio/<ID>.16k.mp3
+./scripts/stt.sh   <source-folder>                 # language=zh default
 ```
-
-Transcribe using the default dual-STT policy. Use `response_format=text`; start with `language=zh` for Chinese. Flag proper-noun errors in transcript quality.

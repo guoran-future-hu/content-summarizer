@@ -1,13 +1,13 @@
 ---
 name: content-summarizer
-description: Use when turning long-form source material into durable four-layer notes with raw-source preservation, user-owned summary filing, and compression checks.
+description: Use when turning long-form source material into durable four-layer notes.
 ---
 
 # Long-Form Source -> Notes
 
 Use two roots:
 
-- Skill root: this skill directory, for shipped files such as `./source-acquisition.md`, `./naming-convention.md`, `./scripts/`, and optional `./LOCAL_ENVIRONMENT.md`.
+- Skill root: this skill directory, for shipped files such as `./source-acquisition.md`, `./scripts/`, `./references/`, and optional `./LOCAL_ENVIRONMENT.md`.
 - Summary root: the user's output folder, chosen by the user or local environment. Do not store user source material in the skill repo by default.
 
 ## Posture
@@ -16,32 +16,31 @@ Act as a source-faithful learning-note editor. Compress for first-time absorptio
 
 ## Maintenance
 
-This is a skill shared by many agents and machines. Track general rules only. Put local paths, host setup, private access, regional/network notes, one-offs, and tool quirks in git-ignored `./LOCAL_ENVIRONMENT.md`.
+This is a skill shared by many agents and machines. Track general rules only. Put local paths, host setup, private access, regional/network notes, etc. in git-ignored `./LOCAL_ENVIRONMENT.md`.
+
+Read `README.md` before editing the skill.
 
 ## Steps
 
 1. Load `./LOCAL_ENVIRONMENT.md` if present.
-2. Identify source type, metadata, and whether the provided source is already usable Markdown/source text.
-3. Read `./naming-convention.md`; use the matching entry or default policy for source folder and file names.
-4. If usable Markdown/source text is not already provided, read `./source-acquisition.md`
-5. Save or copy raw/source material in `<summary-root>/<source-folder>/`.
+2. Identify source type and metadata.
+3. For naming convention, check existing files in the target folder; follow their pattern.
+4. If usable Markdown/source text is not already provided, read `./source-acquisition.md`; for Bilibili sources also `./references/bilibili-recipes.md`.
+5. Save or copy raw/source material in `<summary-root>/<source-folder>/`; a source from outside the summary root gets copied in first.
 6. Clean mechanical artifacts only.
 7. Draft Layer 2 as the source map, then write the four-layer notes beside the raw/source file with `-summary`.
-8. Run the coverage audit.
+8. Run the coverage audit (raw vs Layer 3).
 9. Run the compression check; tighten if needed.
 10. Delete temporary staging files.
-11. Update `./source-acquisition.md` only for reusable acquisition, cleanup, or fallback rules. Update `./naming-convention.md` only for reusable folder or naming rules.
-
-## Filing
-Read `./naming-convention.md` before saving. Preserve the raw/source file beside the summary under `<summary-root>/<source-folder>/`. If a provided source is outside `<summary-root>`, copy it into the right source folder first.
+11. If necessary, update `./source-acquisition.md` for acquisition or fallback rules.
 
 ## Language
 
-Summary should match the source language. For mixed sources, use the dominant language and preserve source terms/quotes as written. Use UTF-8 for Markdown body content. Keep filenames and other meta in ASCII.
+Summary should match the source language. Use UTF-8 for Markdown body content. Keep filenames and other meta in ASCII.
 
 ## Output Contract
 
-Always produce four layers. Same information -> fewer words -> easier absorption. 
+Always produce four layers. 
 
 Prefer short sentences and simple wording. Use longer sentences or complex wording only when needed for accuracy.
 
@@ -55,13 +54,9 @@ Write 3-4 sentences, about 80-120 words. Name the topic, central question or the
 
 ### 2. Structured Outline
 
-Create the source map, not just a polished table of contents. Layer 2 is the coverage artifact that makes Layer 3's content salient.
+Create the source map, not just a polished table of contents. Layer 2 makes Layer 3's content salient.
 
-**Build it from the source, not memory**. Start with every explicit source heading, timestamp block, section break, or obvious topic shift, then scan between those anchors for unheaded topic shifts. Each entry is one heading plus one compact sentence made from connecting short phrases that index distinct claims, mechanisms, examples, caveats, historical facts, source-bias points, practical implications, institutional or economic structures, and side branches worth preserving.
-
-Compactness and complete coverage do not conflict here: the sentence indexes and connects content; it does not explain it.
-
-Low-value or similar sections may be merged, but the merged heading or sentence must name the covered material.
+**Build it from the source, not memory.** Start with every explicit source heading, timestamp block, section break, or obvious topic shift, then scan between those anchors for unheaded topic shifts. Each entry is one heading plus one compact sentence connecting short phrases that index distinct claims, mechanisms, examples, caveats, historical facts, source-bias points, practical implications, institutional or economic structures, and side branches worth preserving. It indexes; it does not explain.
 
 Use timestamps only when directly available.
 
@@ -69,16 +64,7 @@ Use timestamps only when directly available.
 
 This is the main layer. Rewrite the source with fewer words, simpler presentation, same effective information.
 
-Cover every distinct topic and significant content move in the source. A topic may be merged into a broader heading, but it must not vanish. Preserve side branches when they carry a distinct claim, example, mechanism, historical fact, source caveat, or practical implication.
-
-Preserve (minimal list):
-
-- Technical terms
-- Key points, arguments, and reasoning chains
-- Definitions, frameworks, mental models, and technical details
-- Causal mechanisms, assumptions, evidence, and supporting examples
-- Caveats, disagreements, limitations, exceptions, null results, and trade-offs
-- Claim posture: observation, experiment, theory, speculation, forecast, interpretation, or prescription
+Cover every distinct topic and significant content move. A topic may merge into a broader heading, but must not vanish. Preserve anything carrying distinct substance: claims, examples, mechanisms, historical facts, caveats, disagreements, confidence signals, practical implications — side branches included.
 
 Remove (minimal list):
 
@@ -86,7 +72,7 @@ Remove (minimal list):
 - Academic and verbal padding, filler
 - Jokes, casual chatter and low-info examples
 
-Compress according to information density, not medium. Conversational sources often contain repetition, filler, social chatter, and false starts; remove those aggressively. Preserve any conversational segment that carries a distinct claim, example, caveat, disagreement, mechanism, historical fact, confidence signal, or practical implication.
+Compress by information density, not medium; casual conversation can be dropped aggressively.
 
 Use structures like bullets and tables when they substantially help clarify the content.
 
@@ -96,15 +82,11 @@ Distill the source's core conclusions, strongest arguments, practical implicatio
 
 ## Wrong Source Warning
 
-Stop and warn the user for potentially provided summary as source if file has simialr 4 layer structure.
+If the provided source already has this four-layer structure, stop and warn the user — it looks like a summary, not a raw source.
 
 ## Fidelity, Attribution, and Confidence
 
-Default to clean source-grounded prose. Attribute only when speaker identity or author framing changes interpretation, such as disagreement, expertise, disputed claims, forecasts, or clearly personal analysis.
-
-Preserve the source's confidence level. Keep hedges such as "probably," "might," "very likely," "in my view," etc.
-
-For controversial or interpretive claims, signal the frame once at the section or paragraph level rather than repeating attribution sentence by sentence. Use direct quotes sparingly, only for precise or memorable wording.
+Default to clean source-grounded prose. Attribute only when speaker identity or framing changes interpretation (disagreement, expertise, disputed claims, forecasts, personal analysis); then signal the frame once per section, not sentence by sentence. Preserve the source's confidence level — keep its hedges ("probably," "might," "in my view"); quote sparingly, only for precise or memorable wording.
 
 ## Output Template
 
@@ -155,14 +137,13 @@ One short sentence.
 
 ## Coverage Audit
 
-Before moving to Layer 3, compare the source against Layer 2 for omissions. Scripts may extract headings or timestamps, but semantic coverage is judged by reading the source map.
+Audit the raw source against Layer 3 directly — only this surfaces details lost in the source→Layer-2 squeeze; neither Layer-2 comparison shows them.
 
-1. Re-check the source against Layer 2. Every explicit source heading must appear, unless marked `intentionally dropped: <low-info reason>`.
-2. For each source topic or significant content move, mark one of: `indexed`, `merged into <Layer 2 heading>`, or `intentionally dropped: <low-info reason>`.
-3. Add missing effective information to Layer 2 before changing Layer 3.
-4. Refresh the affected Layer 3 notes from the corrected Layer 2 source map.
+1. Read the source and Layer 3 side by side. For every topic, mechanism, example, caveat, and claim in the source, check Layer 3 expands it with its effective detail — not merely names it.
+2. Mark each source topic or significant content move: `expanded`, `merged into <Layer 3 heading>` (distinct content preserved), or `intentionally dropped: <low-info reason>`.
+3. Expand the under-developed Layer 3 sections from the source. Afterward, re-check Layer 2 for index drift.
 
-Completion criterion: every source heading, topic, and significant content move has a visible destination in Layer 2, or a concrete low-information drop reason.
+Completion criterion: every source topic, mechanism, and significant detail is fully expanded in Layer 3, or has a concrete low-information drop reason. A topic present only as a Layer 2 heading does not count as covered.
 
 ## Compression Check
 
@@ -174,10 +155,8 @@ python ./scripts/check_compression.py <summary-root>/<source-folder>/<summary-fi
 
 Targets:
 
-- Full summary must be < 80% of raw; if it is >= 80%, tighten the summary.
+- Full summary must be < 80% of raw; tighten if >= 80%.
 - Layer 3 should be roughly 20-50% of raw, depending on source density. Ratios outside this range are warnings, not failures.
-- If < 20%, run the coverage audit; expand only when the audit finds missing effective information.
-- If > 50%, tighten only where compression preserves effective information.
 - Do not add filler, drop nuance, or make byte-count edits only to satisfy a ratio.
 
 ## Ask When in Doubt
