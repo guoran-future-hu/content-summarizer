@@ -76,11 +76,15 @@ def parse_srt(text):
             return int(h) * 3600 + int(mn) * 60 + int(s) + int(ms) / (10 ** len(ms))
 
         start, end = sec(*g[:4]), sec(*g[4:8])
-        txt = "".join(lines[i + 1:])
+        txt = " ".join(lines[i + 1:])
         txt = re.sub(r"<[^>]+>", "", txt)
-        txt = re.sub(r"\{\\[^}]*\}", "", txt).strip()
-        if not txt or (cues and txt == cues[-1][2]):
+        txt = re.sub(r"\{\\[^}]*\}", "", txt)
+        txt = re.sub(r"\s+", " ", txt).strip()
+        if not txt or (cues and txt == cues[-1][2].strip()):
             continue
+        # Latin-script cues need an explicit separator; CJK cues must not get one.
+        if re.search(r"[A-Za-z0-9\.,!?;:\)\]\"']$", txt):
+            txt += " "
         cues.append((start, end, txt))
     return cues
 
