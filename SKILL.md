@@ -14,7 +14,7 @@ Use two roots:
 
 This is a skill shared by many agents and machines. Track general rules only. Put local paths, host setup, private access, regional/network notes, etc. in git-ignored `./LOCAL_ENVIRONMENT.md`.
 
-Read `dev/ENGINEERING.md` before editing the skill; `dev/` stays out of the repo and never enters a run.
+Read `dev/ENGINEERING.md` before editing the skill; nothing in `dev/` is part of a run.
 
 ## Steps
 
